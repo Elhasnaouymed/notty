@@ -26,7 +26,7 @@ class UserModel(db.Model):
         if cryptman.password_strength(password) < current_app.config.get(Strings.PASSWORD_STRENGTH):
             raise excs.WeakPasswordError
         if not re.match(Regex.USERNAME_REGEX, username):
-            raise excs.UsernameSyntaxError(username)
+            raise excs.UsernamePatternError(username)
         # > setting instance variables
         self.username = username
         self.password = password
@@ -54,7 +54,7 @@ class NoteModel(db.Model):
 
     def __init__(self, title: str, content: str, user: UserModel):
         if not re.match(Regex.NOTE_TITLE_REGEX, title):
-            raise excs.NoteTitleSyntaxError(title)
+            raise excs.NoteTitlePatternError(title)
         self.user = user
         self.title = title
         self.content = content
@@ -140,7 +140,7 @@ class DatabaseSimpleAPI:
             if not isinstance(title, str):
                 raise TypeError('Note title must be str.')
             if not re.match(Regex.NOTE_TITLE_REGEX, title):
-                raise excs.NoteTitleSyntaxError(title)
+                raise excs.NoteTitlePatternError(title)
             obj_note.title = title
 
         if content is not None:

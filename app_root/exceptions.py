@@ -17,14 +17,14 @@ class NoteException(NottyException): pass
 
 # Error Types
 
-class SyntaxException(NottyException): pass
+class PatternException(NottyException): pass
 class SingularityException(NottyException): pass
 class NullException(NottyException): pass
 
 #
 
 
-class UsernameSyntaxError(UserException, SyntaxException):
+class UsernamePatternError(UserException, PatternException):
     def __init__(self, username: str) -> None:
         self.message = f"Username {username} doesn't respect regex('{Regex.USERNAME_REGEX}')"
 
@@ -40,12 +40,12 @@ class UserNotFoundError(UserException, NullException):
         self.message = f"No such User with {attribute} == {user}"
 
 
-class WeakPasswordError(UserException, SyntaxException):
+class WeakPasswordError(UserException, PatternException):
     def __init__(self):
         self.message = "You chosen a weak password, Please choose a better one."
 
 
-class NoteTitleSyntaxError(NoteException, SyntaxException):
+class NoteTitlePatternError(NoteException, PatternException):
     def __init__(self, title: str) -> None:
         self.message = f"Note Title {title} doesn't respect regex('{Regex.NOTE_TITLE_REGEX}')"
 
