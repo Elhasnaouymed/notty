@@ -4,7 +4,7 @@ from typing import *
 
 from flask import current_app
 
-from . import db, cryptman
+from .extensions import db, cryptman
 from . import exceptions as excs, Strings
 from .constants import Regex
 

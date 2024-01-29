@@ -2,15 +2,9 @@ import os
 import logging
 
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
 
 from .constants import *
-from encryptman import CryptMan
-
-
-db = SQLAlchemy()
-cryptman = CryptMan()
+from .extensions import db, cryptman, migrate
 
 
 def init_logger(app: Flask, overwrite=True):
@@ -55,7 +49,6 @@ def configure(app: Flask):
 
 
 def init_db(app: Flask):
-    from . import models
     db.init_app(app)
     with app.app_context():
         db.create_all()

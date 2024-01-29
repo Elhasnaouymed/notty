@@ -3,6 +3,7 @@ from flask_restful import Resource, fields, request, reqparse
 from . import marshal_return
 from ..constants import SCodes
 
+
 # > marshaling UserModel
 user_model_fields = {
     'id': fields.Integer(),
