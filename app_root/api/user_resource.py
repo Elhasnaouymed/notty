@@ -1,6 +1,7 @@
-from flask_restful import Resource, fields, request, reqparse
+from flask_restx import Resource, fields, reqparse
+from flask import request
 
-from . import marshal_return
+from .utils import marshal_return
 from ..constants import SCodes
 
 
