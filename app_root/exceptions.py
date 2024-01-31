@@ -1,3 +1,10 @@
+"""
+    Having an exception for each possible error might become handy, like:
+
+    you want to return the exact error message of what happen to the user, instead of checking each error in the code with `if` statements,
+    you can raise the Python exception
+"""
+
 from .constants import Regex
 from typing import *
 

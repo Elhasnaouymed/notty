@@ -1,12 +1,13 @@
+"""
+    the app custom configs names, the regular expression patterns, the status codes and other constants;
+    should be defined once and used in the entire App, welcome to the Constants module :)
+"""
+
 from datetime import datetime, UTC
 
 
 class Strings:
-    PASSWORD_STRENGTH = 'PASSWORD_STRENGTH'
-
-
-class ServerMessages:
-    argument_error = 'Argument Error!'
+    REQUIRED_PASSWORD_STRENGTH = 'REQUIRED_PASSWORD_STRENGTH'  # this is a config name, see `configs` module
 
 
 class Regex:
@@ -15,7 +16,7 @@ class Regex:
 
 
 class SCodes:
-    #
+    """ Status Codes for easy access, because we all forget them """
     CONTINUE_100 = 100
     SWITCHING_PROTOCOLS_101 = 101
     PROCESSING_102 = 102
@@ -88,4 +89,4 @@ class SCodes:
 # logger
 LOG_FILE = f'logs/log-{datetime.now(UTC).strftime("%y-%m-%d")}.log'  # used by app.logger to log to
 LOGGER_FILE_FORMATTER = "[%(asctime)s] %(levelname)s in %(module)s: %(message)s"  # logger formatter for file
-LOGGER_STEAM_FORMATTER = "[%(asctime)s] %(levelname)s in %(module)s: %(message)s"  # logger formatter for stdout
+LOGGER_STREAM_FORMATTER = "[%(asctime)s] %(levelname)s in %(module)s: %(message)s"  # logger formatter for stdout

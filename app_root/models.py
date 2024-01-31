@@ -23,7 +23,7 @@ class UserModel(db.Model):
         # > validating inputs
         if self.user_exists(username):
             raise excs.UsernameAlreadyExistError(username)
-        if cryptman.password_strength(password) < current_app.config.get(Strings.PASSWORD_STRENGTH):
+        if cryptman.password_strength(password) < current_app.config.get(Strings.REQUIRED_PASSWORD_STRENGTH):
             raise excs.WeakPasswordError
         if not re.match(Regex.USERNAME_REGEX, username):
             raise excs.UsernamePatternError(username)

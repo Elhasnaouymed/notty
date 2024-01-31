@@ -5,12 +5,16 @@ from flask import Flask
 
 from .constants import *
 from .extensions import db, cryptman, migrate
+from .jinja import init_jinja_env
+from .cli import init_cli
+from .api import init_api
+from .config import DevConfig
 
 
 def init_logger(app: Flask, overwrite=True):
     """
     sets the app logger to print to screen and also save to file
-    :param overwrite:
+    :param overwrite: whether to overwrite if log file exists or append to it
     :param app: the target Flask app
     :return: None
     """
@@ -27,7 +31,7 @@ def init_logger(app: Flask, overwrite=True):
             pass
 
     # app.logger = logging.Logger(__name__)
-    # < except of overriding a property, > override the logger config
+    # < instead of overriding a property, > change the existing logger configuration
     app.logger.setLevel(logging.DEBUG)  # set logger level
     #
     file_handler = logging.FileHandler(LOG_FILE)  # set a file to log to
@@ -35,7 +39,7 @@ def init_logger(app: Flask, overwrite=True):
     file_handler.setFormatter(formatter)
     #
     steam_handler = logging.StreamHandler()  # set the steam handler to print out
-    formatter = logging.Formatter(LOGGER_STEAM_FORMATTER)
+    formatter = logging.Formatter(LOGGER_STREAM_FORMATTER)
     steam_handler.setFormatter(formatter)
     #
     app.logger.addHandler(file_handler)
@@ -43,29 +47,29 @@ def init_logger(app: Flask, overwrite=True):
 
 
 def configure(app: Flask):
-    from .config import DevConfig
     app.config.from_object(DevConfig)
     app.logger.debug('Done: App Configured.')
 
 
 def init_db(app: Flask):
     db.init_app(app)
-    with app.app_context():
-        db.create_all()
     app.logger.debug('Done: Database Initialized.')
 
 
 def create_app():
     app = Flask(__name__)
+    # > configuration
     init_logger(app, True)
     configure(app)
+
+    # > blueprints and api
+    init_api(app)
+
+    # > anything that utilizes database
     init_db(app)
 
-    from .api import init_api
-    init_api(app)
-    app.logger.debug('Done: Rest API initialized.')
-
-    from .jinja import init_jinja_env
+    # > environments (jinja, shell)
     init_jinja_env(app)
+    init_cli(app)
 
     return app
