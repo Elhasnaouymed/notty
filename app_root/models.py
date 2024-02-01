@@ -109,7 +109,7 @@ class DatabaseSimpleAPI:
 
     # ******************* Note:
 
-    def add_note(self, title: str, content: str, user: UserModel, autosave=None):
+    def add_note(self, title: str, content: str, user: Union[int, str, UserModel], autosave=None):
         user_obj = self._get_user_as_object(user)
         if not user_obj:
             raise excs.UserNotFoundError(user)

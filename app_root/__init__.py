@@ -4,7 +4,7 @@ import logging
 from flask import Flask
 
 from .constants import *
-from .extensions import db, cryptman, migrate
+from .extensions import *
 from .jinja import init_jinja_env
 from .cli import init_cli
 from .api import init_api
@@ -51,11 +51,6 @@ def configure(app: Flask):
     app.logger.debug('Done: App Configured.')
 
 
-def init_db(app: Flask):
-    db.init_app(app)
-    app.logger.debug('Done: Database Initialized.')
-
-
 def create_app():
     app = Flask(__name__)
     # > configuration
@@ -67,6 +62,7 @@ def create_app():
 
     # > anything that utilizes database
     init_db(app)
+    init_migrate(app)
 
     # > environments (jinja, shell)
     init_jinja_env(app)
