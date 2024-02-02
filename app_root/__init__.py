@@ -9,6 +9,8 @@ from .jinja import init_jinja_env
 from .cli import init_cli
 from .api import init_api
 from .config import DevConfig
+from .blueprints import init_blueprints
+from .models import UserModel, NoteModel
 
 
 def init_logger(app: Flask, overwrite=True):
@@ -51,6 +53,21 @@ def configure(app: Flask):
     app.logger.debug('Done: App Configured.')
 
 
+def init_login_manager(app: Flask):
+    login_manager.init_app(app)
+    login_manager.login_view = 'auth.login'
+    login_manager.login_message_category = 'warning'
+    login_manager.login_message = 'You must login first to access this page.'
+    login_manager.needs_refresh_message = 'Login token changed, You must login again!'
+    login_manager.needs_refresh_message_category = 'danger'
+
+    @login_manager.user_loader
+    def user_loader(user_token: int):
+        return UserModel.query.filter_by(token=user_token).first()
+
+    app.logger.debug('Done: login manager Initialized.')
+
+
 def create_app():
     app = Flask(__name__)
     # > configuration
@@ -59,6 +76,7 @@ def create_app():
 
     # > blueprints and api
     init_api(app)
+    init_blueprints(app)
 
     # > anything that utilizes database
     init_db(app)
@@ -67,5 +85,8 @@ def create_app():
     # > environments (jinja, shell)
     init_jinja_env(app)
     init_cli(app)
+
+    # login_manager
+    init_login_manager(app)
 
     return app

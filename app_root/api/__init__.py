@@ -13,7 +13,7 @@ def init_api(app: Union[Flask, Blueprint]):
     :param app: Flask
     :return: new RestX API
     """
-    api = Api(prefix='/api')
+    api = Api(prefix='/api', doc=False)
     app.logger.debug('Done: API created.')
 
     from .user_resource import UserResource
