@@ -13,6 +13,7 @@ login_manager = LoginManager()
 
 
 def init_db(app: Flask):
+    from . import models
     db.init_app(app)
     app.logger.debug('Done: Database Initialized.')
 
