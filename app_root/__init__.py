@@ -53,21 +53,6 @@ def configure(app: Flask):
     app.logger.debug('Done: App Configured.')
 
 
-def init_login_manager(app: Flask):
-    login_manager.init_app(app)
-    login_manager.login_view = 'auth.login'
-    login_manager.login_message_category = 'warning'
-    login_manager.login_message = 'You must login first to access this page.'
-    login_manager.needs_refresh_message = 'Login token changed, You must login again!'
-    login_manager.needs_refresh_message_category = 'danger'
-
-    @login_manager.user_loader
-    def user_loader(user_token: int):
-        return UserModel.query.filter_by(token=user_token).first()
-
-    app.logger.debug('Done: login manager Initialized.')
-
-
 def create_app():
     app = Flask(__name__)
     # > configuration
