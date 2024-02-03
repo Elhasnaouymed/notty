@@ -5,10 +5,10 @@ auth = Blueprint('auth', __name__)
 
 @auth.get('/login')
 def login():
-    return 'Login :)'
+    return render_template('pages/login.html')
 
 
 @auth.get('/signup')
 def register():
-    return 'Register :)'
+    return render_template('pages/register.html')
 
