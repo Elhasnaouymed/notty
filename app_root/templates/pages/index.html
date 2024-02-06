@@ -3,6 +3,97 @@
 
 
 {% block content %}
-    <h1 class="text-primary">Hello</h1>
-    <h2>index content</h2>
+    <div class="px-4 py-5 my-5 text-center">
+        <img class="d-block mx-auto mb-4" src="{{ url_for('static', filename='img/icons/note.png') }}">
+        <h1 class="display-5 fw-bold text-success text-secondary">You Made it !</h1>
+        <div class="col-lg-6 mx-auto">
+            <p class="lead mb-4">
+                Welcome to <b class="text-primary">Notty</b> – your simple, open-source notes app built with Flask! Designed for productivity enthusiasts,
+                <b class="text-primary">Notty</b> offers a seamless multiuser experience, Join our community today and start simplifying your life, one note at a time.
+            </p>
+            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                <button type="button" class="btn btn-primary btn-lg px-4 gap-3">Primary button</button>
+                <button type="button" class="btn btn-outline-secondary btn-lg px-4">Secondary</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container px-4 py-5" id="icon-grid">
+        <h2 class="pb-2 border-bottom text-success">Features</h2>
+
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 py-5">
+            <div class="col d-flex align-items-start">
+                <svg class="bi text-body-secondary flex-shrink-0 me-3" width="1.75em" height="1.75em">
+                    <use xlink:href="#bootstrap"></use>
+                </svg>
+                <div>
+                    <h3 class="fw-bold mb-0 fs-4 text-secondary">No Bloat !</h3>
+                    <p>Allows you to Create, View, Edit and Delete your notes, nothing else.</p>
+                </div>
+            </div>
+            <div class="col d-flex align-items-start">
+                <svg class="bi text-body-secondary flex-shrink-0 me-3" width="1.75em" height="1.75em">
+                    <use xlink:href="#cpu-fill"></use>
+                </svg>
+                <div>
+                    <h3 class="fw-bold mb-0 fs-4 text-secondary">No Spyware</h3>
+                    <p>This website wasn't made by neither Microshaft nor Foogle, or even The Zuck.</p>
+                </div>
+            </div>
+            <div class="col d-flex align-items-start">
+                <svg class="bi text-body-secondary flex-shrink-0 me-3" width="1.75em" height="1.75em">
+                    <use xlink:href="#calendar3"></use>
+                </svg>
+                <div>
+                    <h3 class="fw-bold mb-0 fs-4 text-secondary">Open Source</h3>
+                    <p>You can View, Edit, Redistribute the whole thing !</p>
+                </div>
+            </div>
+            <div class="col d-flex align-items-start">
+                <svg class="bi text-body-secondary flex-shrink-0 me-3" width="1.75em" height="1.75em">
+                    <use xlink:href="#home"></use>
+                </svg>
+                <div>
+                    <h3 class="fw-bold mb-0 fs-4 text-secondary">Free of Cost</h3>
+                    <p>This website also wasn't made by IApple (I stands for Idiot).</p>
+                </div>
+            </div>
+            <div class="col d-flex align-items-start">
+                <svg class="bi text-body-secondary flex-shrink-0 me-3" width="1.75em" height="1.75em">
+                    <use xlink:href="#geo-fill"></use>
+                </svg>
+                <div>
+                    <h3 class="fw-bold mb-0 fs-4 text-secondary">No ads</h3>
+                    <p>The World Wide Web is becoming more shitty by each Ad published on it.</p>
+                </div>
+            </div>
+            <div class="col d-flex align-items-start">
+                <svg class="bi text-body-secondary flex-shrink-0 me-3" width="1.75em" height="1.75em">
+                    <use xlink:href="#speedometer2"></use>
+                </svg>
+                <div>
+                    <h3 class="fw-bold mb-0 fs-4 text-secondary">Built with Flask</h3>
+                    <p>Flask is one of the best micro web frameworks, and has a lot of audience.</p>
+                </div>
+            </div>
+            <div class="col d-flex align-items-start">
+                <svg class="bi text-body-secondary flex-shrink-0 me-3" width="1.75em" height="1.75em">
+                    <use xlink:href="#toggles2"></use>
+                </svg>
+                <div>
+                    <h3 class="fw-bold mb-0 fs-4 text-secondary">Educational Purposes</h3>
+                    <p>You can learn a thing or two from Reading through the source code.</p>
+                </div>
+            </div>
+            <div class="col d-flex align-items-start">
+                <svg class="bi text-body-secondary flex-shrink-0 me-3" width="1.75em" height="1.75em">
+                    <use xlink:href="#tools"></use>
+                </svg>
+                <div>
+                    <h3 class="fw-bold mb-0 fs-4 text-secondary">Pull-Welcome</h3>
+                    <p>We Welcome Pull requests, just not on ****Hub, it's on CodeBerg.</p>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock content %}

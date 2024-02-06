@@ -3,6 +3,31 @@
 
 
 {% block content %}
-    <h1 class="text-primary">Register</h1>
-    <h2>register content</h2>
+    <div class="mx-auto col-6 my-5">
+        <h1 class="text-primary">Register</h1>
+        <form action="{{ url_for('auth.register') }}" method="POST">
+            {{ register_form.hidden_tag() }}
+            <div class="my-4">
+                {{ register_form.username.label(class='form-label') }}
+                {{ register_form.username(class='form-control' + (' is-invalid' if register_form.username.errors else ''), placeholder='Choose a Username') }}
+                {% for error in register_form.username.errors %}
+                    <div class="invalid-feedback">
+                        {{ error }}
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="my-4">
+                {{ register_form.password.label(class='form-label') }}
+                {{ register_form.password(class='form-control' + (' is-invalid' if register_form.password.errors else ''), placeholder='Choose a Password') }}
+                {% for error in register_form.password.errors %}
+                    <div class="invalid-feedback">
+                        {{ error }}
+                    </div>
+                {% endfor %}
+            </div>
+            {{ register_form.submit(class='btn btn-primary px-5') }}
+
+        </form>
+    </div>
+
 {% endblock content %}

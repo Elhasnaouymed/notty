@@ -29,7 +29,7 @@ class UserModel(db.Model):
             raise excs.UsernamePatternError(username)
         # > setting instance variables
         self.username = username
-        self.password = password
+        self.password = cryptman.generate_password_hash(password)
         self.token = cryptman.generate_user_token()
 
     @classmethod
