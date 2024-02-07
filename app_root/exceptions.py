@@ -33,7 +33,7 @@ class NullException(NottyException): pass
 
 class UsernamePatternError(UserException, PatternException):
     def __init__(self, username: str) -> None:
-        self.message = f"Username {username} doesn't respect regex('{Regex.USERNAME_REGEX}')"
+        self.message = f"Username '{username}' doesn't respect regex('{Regex.USERNAME_REGEX}')"
 
 
 class UsernameAlreadyExistError(UserException, SingularityException):

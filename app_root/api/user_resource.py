@@ -1,77 +1,54 @@
-from flask_restx import Resource, fields, reqparse
+from flask_restx import Resource, fields, reqparse, Namespace, marshal_with
 from flask import request
 
-from .utils import marshal_return
+from .api_models import *
 from ..constants import SCodes
+from .. import exceptions as excs
 
 
-# > marshaling UserModel
-user_model_fields = {
-    'id': fields.Integer(),
-    'username': fields.String(),
-    'join': fields.DateTime(),
-    'token': fields.String(),
-}
-
-# > used in UserResource.post endpoint
-user_post_args_parser = reqparse.RequestParser()
-user_post_args_parser.add_argument('username', type=str, required=True)
-user_post_args_parser.add_argument('password', type=str, required=True)
-
-# > used in UserResource.delete endpoint
-user_delete_args_parser = reqparse.RequestParser()
-user_delete_args_parser.add_argument('id', type=int)
-user_delete_args_parser.add_argument('username', type=str)
+user_namespace = Namespace('User', path='/user', description='Create and manage Users')
 
 
+@user_namespace.route('/')
 class UserResource(Resource):
+    @user_namespace.expect(user_get_parser)
+    @user_namespace.marshal_with(user_model)
     def get(self):
-        # > process args
-        try:
-            args = request.args
-            arg_id = args.get('id')
-            arg_username = args.get('username')
-            arg_id = int(arg_id) if arg_id else None
-        except Exception as ex:
-            return {'message': 'Arguments Error!'}, SCodes.BAD_REQUEST_400
+        args = user_get_parser.parse_args()
+        arg_id = args.get('id')
+        arg_username = args.get('username')
 
         from ..models import DatabaseSimpleAPI
         dsi = DatabaseSimpleAPI()
 
-        user = dsi.get_user(arg_id if arg_id else arg_username)
-        if user is None:
-            return {'message': 'User not found!'}, SCodes.NOT_FOUND_404
-        return marshal_return(user, user_model_fields)
+        user_identifier = arg_id if arg_id else arg_username
+        user = dsi.get_user(user_identifier)
+        if not user:
+            raise excs.UserNotFoundError(user_identifier)
+        return user
 
+    @user_namespace.expect(user_post_fields)
+    @user_namespace.marshal_with(user_model)
     def post(self):
-        try:
-            args = user_post_args_parser.parse_args()
-            arg_username = args.get('arg_username')
-            arg_password = args.get('password')
-        except Exception as ex:
-            return {'message': 'Arguments Error!'}, SCodes.BAD_REQUEST_400
+        arg_username = user_namespace.payload.get('username')
+        arg_password = user_namespace.payload.get('password')
+        if not arg_password:
+            raise excs.WeakPasswordError()
 
         from ..models import DatabaseSimpleAPI
         dsa = DatabaseSimpleAPI(True)
 
         new_user = dsa.add_user(arg_username, arg_password)
-        return {'success': 'User Added!', 'user_id': new_user.id}, SCodes.OK_200
+        return new_user, SCodes.CREATED_201
 
+    @user_namespace.expect(user_delete_fields)
     def delete(self):
-        try:
-            args = user_delete_args_parser.parse_args()
-            arg_id = args.get('id')
-            arg_username = args.get('username')
-            assert not (arg_id is arg_username is None)  # - when no argument was passed, error
-        except Exception as ex:
-            return {'message': 'Arguments Error!'}, SCodes.BAD_REQUEST_400
+        arg_id = user_namespace.payload.get('id')
+        arg_username = user_namespace.payload.get('username')
 
         from ..models import DatabaseSimpleAPI
         dsa = DatabaseSimpleAPI(True)
 
         user = arg_id if arg_id else arg_username
-        try:
-            dsa.delete_user(user)
-        except Exception as ex:
-            return {'message': str(ex)}
+        dsa.delete_user(user)
         return {'success': 'User deleted!'}, SCodes.OK_200
