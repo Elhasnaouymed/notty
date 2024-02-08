@@ -1,11 +1,11 @@
 from typing import Union
 
-from flask import Flask, Blueprint
+from flask import Flask, Blueprint, redirect
 from flask_restx import Api
 
 from ..constants import SCodes
 
-api = Api(prefix='/api', doc='/api', version='0.1', title='Notty Official RestX API', description='Allows you to create and manage everything through the RESTX API.')
+api = Api(prefix='/api/', doc='/api/', version='0.1', title='Notty Official RestX API', description='Allows you to create and manage everything through the RESTX API.')
 
 
 def _init_error_handlers(api_: Api):

@@ -8,12 +8,22 @@ user_model = api.model('User Model', {
     'username': fields.String(),
     'join': fields.DateTime(),
     'token': fields.String(),
+    'notes': fields.Nested(
+        api.model('User\'s Note Model', {
+            'id': fields.Integer(),
+            'title': fields.String(),
+            'content': fields.String(),
+            'create_date': fields.DateTime(),
+            'last_modified': fields.DateTime(),
+        }), as_list=True
+    )
 })
 
 # > used only as a nested field in note_post_model
 user_get_model = api.model('User Get Model', {
     'id': fields.Integer(),
     'username': fields.String()
+
 })
 
 # > used to parse URL parameters in user.get
@@ -33,14 +43,19 @@ user_delete_fields = api.model('User Delete Model', {
     'username': fields.String()
 })
 
-
+# > used to marshal the note.get route
 note_model = api.model('Note Model', {
     'id': fields.Integer(),
     'title': fields.String(),
     'content': fields.String(),
     'create_date': fields.DateTime(),
     'last_modified': fields.DateTime(),
-    'user': fields.Nested(user_model),
+    'user': fields.Nested(
+        api.model('Note\'s User Model', {
+            'id': fields.Integer(),
+            'username': fields.String(),
+        })
+    ),
 })
 
 note_get_parser = reqparse.RequestParser()
@@ -51,7 +66,6 @@ note_post_model = api.model('Note Post Model', {
     'content': fields.String(),
     'user': fields.Nested(user_get_model)
 })
-
 
 note_delete_model = api.model('Note Delete Model', {
     'id': fields.Integer(required=True, description="The Note's id")

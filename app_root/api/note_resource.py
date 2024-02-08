@@ -1,5 +1,4 @@
-from flask_restx import Resource, fields, reqparse, Namespace, marshal_with
-from flask import request
+from flask_restx import Resource, Namespace
 
 from .api_models import *
 from ..constants import SCodes
@@ -11,7 +10,7 @@ note_namespace = Namespace('Note', path='/note', description='Create and manage 
 
 @note_namespace.route('/')
 class NoteResource(Resource):
-    @marshal_with(note_model)
+    @note_namespace.marshal_with(note_model)
     @note_namespace.expect(note_get_parser)
     def get(self):
         arg_id = note_get_parser.parse_args().get('id')
@@ -24,7 +23,7 @@ class NoteResource(Resource):
         return note
 
     @note_namespace.expect(note_post_model)
-    @marshal_with(note_model)
+    @note_namespace.marshal_with(note_model)
     def post(self):
         payload = note_namespace.payload
         arg_title = payload.get('title')

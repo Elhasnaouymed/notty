@@ -1,5 +1,4 @@
-from flask_restx import Resource, fields, reqparse, Namespace, marshal_with
-from flask import request
+from flask_restx import Resource, Namespace
 
 from .api_models import *
 from ..constants import SCodes
