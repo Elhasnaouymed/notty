@@ -2,7 +2,7 @@
     Having an exception for each possible error might become handy, like:
 
     you want to return the exact error message of what happen to the user, instead of checking each error in the code with `if` statements,
-    you can raise the Python exception
+    you can raise the Python exception with a .message attribute with all info and the exact type error ;>)
 """
 
 from .constants import Regex
@@ -50,6 +50,11 @@ class UserNotFoundError(UserException, NullException):
 class WeakPasswordError(UserException, PatternException):
     def __init__(self):
         self.message = "You chosen a weak password, Please choose a better one."
+
+
+class InCorrectPasswordError(UserException, PatternException):
+    def __init__(self):
+        self.message = "Password is incorrect !"
 
 
 class NoteTitlePatternError(NoteException, PatternException):

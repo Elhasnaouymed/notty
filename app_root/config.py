@@ -1,3 +1,7 @@
+"""
+    The config objects for the Flask app
+"""
+
 from flask.config import Config
 
 
@@ -8,4 +12,5 @@ class DevConfig(Config):
 
     # > these are the custom configs for this app
     # > if you change the names of them, make sure you change it also on constants.Strings module
-    REQUIRED_PASSWORD_STRENGTH = .0  # must be a float between 0..1
+    REQUIRED_PASSWORD_STRENGTH = .0  # must be a float between 0..1  # TODO: change this on production to a reasonable value
+    LOGOUT_TOKEN_EXPIRE_SECONDS = 3600  # == 1 hour

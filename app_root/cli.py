@@ -16,7 +16,7 @@ def _create_default_records(app: Flask):
     try:
         dsi.add_user('admin', 'admin', autosave=True)
         app.logger.info('Done: Default user admin:admin Created.')
-    except Exception as ex:
+    except Exception:
         app.logger.warning('Warning: Default user admin already exists.')
 
 
