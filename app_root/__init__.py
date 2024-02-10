@@ -73,5 +73,6 @@ def create_app():
 
     # login_manager
     init_login_manager(app)
+    init_cryptman(app)
 
     return app

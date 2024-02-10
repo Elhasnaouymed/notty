@@ -3,13 +3,14 @@ from datetime import datetime, UTC
 from typing import *
 
 from flask import current_app
+from flask_login import UserMixin
 
 from .extensions import db, cryptman
-from . import exceptions as excs, Strings
+from . import exceptions as excs, StringNames
 from .constants import Regex
 
 
-class UserModel(db.Model):
+class UserModel(db.Model, UserMixin):
     __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
     token = db.Column(db.String(256), unique=True, nullable=False)
@@ -23,14 +24,17 @@ class UserModel(db.Model):
         # > validating inputs
         if self.user_exists(username):
             raise excs.UsernameAlreadyExistError(username)
-        if cryptman.password_strength(password) < current_app.config.get(Strings.REQUIRED_PASSWORD_STRENGTH):
-            raise excs.WeakPasswordError
+        if cryptman.password_strength(password) < current_app.config.get(StringNames.REQUIRED_PASSWORD_STRENGTH):
+            raise excs.WeakPasswordError()
         if not re.match(Regex.USERNAME_REGEX, username):
             raise excs.UsernamePatternError(username)
         # > setting instance variables
         self.username = username
         self.password = cryptman.generate_password_hash(password)
         self.token = cryptman.generate_user_token()
+
+    def get_id(self):
+        return self.token
 
     @classmethod
     def get_username_id(cls, username: str) -> Union[int, None]:
@@ -45,21 +49,24 @@ class UserModel(db.Model):
 class NoteModel(db.Model):
     __tablename__ = 'note'
     id = db.Column(db.Integer, primary_key=True)
+    token = db.Column(db.String(256))
     title = db.Column(db.String(128), nullable=False)
     content = db.Column(db.String(8192), nullable=False)
     create_date = db.Column(db.DateTime, default=datetime.now(UTC))
     last_modified = db.Column(db.DateTime, default=None)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    user = db.relationship('UserModel', backref=db.backref('notes', cascade="all,delete"))
+    user = db.relationship('UserModel', backref=db.backref('notes', lazy='dynamic', cascade="all,delete"))
 
     def __init__(self, title: str, content: str, user: UserModel):
         if not re.match(Regex.NOTE_TITLE_REGEX, title):
             raise excs.NoteTitlePatternError(title)
         self.user = user
+        self.token = cryptman.generate_note_unique_token()
         self.title = title
         self.content = content
 
 
+# > TODO: probably this class needs its own module, I will do it soon
 class DatabaseSimpleAPI:
     def __init__(self, autosave=False):
         self._autosave = autosave
@@ -77,10 +84,12 @@ class DatabaseSimpleAPI:
             raise TypeError('Invalid argument type! User identifier must be int or str or User object.')
 
     @staticmethod
-    def _get_note_as_object(any_identifier: Union[NoteModel, int]) -> NoteModel:
+    def _get_note_as_object(any_identifier: Union[NoteModel, int, str]) -> NoteModel:
         """ Makes sure the return is a Note object, or Error """
         if isinstance(any_identifier, int):
             return NoteModel.query.get(any_identifier)
+        elif isinstance(any_identifier, str):
+            return NoteModel.query.filter_by(token=any_identifier).first()
         elif isinstance(any_identifier, NoteModel):
             return any_identifier
         else:
@@ -107,6 +116,14 @@ class DatabaseSimpleAPI:
         if autosave or autosave is None and self._autosave:
             db.session.commit()
 
+    def check_user_login(self, user: Union[str, int], password: str):
+        obj_user = self._get_user_as_object(user)
+        if not obj_user:
+            raise excs.UserNotFoundError(user)
+        if not cryptman.check_password_hash(obj_user.password, password):
+            raise excs.InCorrectPasswordError()
+        return obj_user
+
     # ******************* Note:
 
     def add_note(self, title: str, content: str, user: Union[int, str, UserModel], autosave=None):
@@ -120,7 +137,7 @@ class DatabaseSimpleAPI:
             db.session.commit()
         return note
 
-    def get_note(self, note: int):
+    def get_note(self, note: int | str):
         return self._get_note_as_object(note)
 
     def delete_note(self, note: Union[int, NoteModel], autosave=None):
@@ -158,4 +175,4 @@ class DatabaseSimpleAPI:
         obj_user = self._get_user_as_object(user)
         if not obj_user:
             raise excs.UserNotFoundError(user)
-        return obj_user.notes
+        return obj_user.notes.all()
