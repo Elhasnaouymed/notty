@@ -1,27 +1,31 @@
+"""
+    The forms are defined here
+"""
+
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField
 from wtforms.validators import DataRequired, Length, Regexp, EqualTo
 
-from . import exceptions as excs
+from .constants import Regex
 
 
 class RegisterForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
     confirm_password = PasswordField('Confirm Password', validators=[EqualTo('password')])
+    agreement = BooleanField('Agree to live Libre and Free as in Freedom.', validators=[DataRequired()])
     submit = SubmitField('Register')
 
-    def validate(self, extra_validators=None):
-        if not FlaskForm.validate(self, extra_validators=extra_validators):
-            return False
 
-        from .models import DatabaseSimpleAPI
-        dsi = DatabaseSimpleAPI()
+class LoginForm(FlaskForm):
+    username = StringField('Username', validators=[DataRequired()])
+    password = PasswordField('Password', validators=[DataRequired()])
+    remember = BooleanField('Remember Me')
+    submit = SubmitField('Login')
 
-        try:
-            # > this should raise an error if the user is not found, which is false-positive in our case
-            _ = dsi.get_user(self.username.data)
-            return False
-        except excs.UserNotFoundError:
-            return True
+
+class NoteForm(FlaskForm):
+    title = StringField('Title', validators=[Regexp(Regex.NOTE_TITLE_REGEX, message=f'Title must respect RegEx({Regex.NOTE_TITLE_REGEX})')])
+    content = TextAreaField('Content', validators=[DataRequired()])
+    submit = SubmitField('Create Note')
