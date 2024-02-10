@@ -6,8 +6,17 @@
 from datetime import datetime, UTC
 
 
-class Strings:
+class DTFormats:
+    LONG = '%Y-%m-%d %H:%M:%S'
+    SHORT = '%a %d, %b %Y %H:%M'
+
+
+class StringNames:
+    # > app config
     REQUIRED_PASSWORD_STRENGTH = 'REQUIRED_PASSWORD_STRENGTH'  # this is a config name, see `configs` module
+    LOGOUT_TOKEN_EXPIRE_SECONDS = 'LOGOUT_TOKEN_EXPIRE_SECONDS'
+    # > other parts
+    LOGOUT_TOKEN_NAME = 'logout'
 
 
 class Regex:
