@@ -18,3 +18,20 @@ Install the requirements and then run using `python` or `python3`
 ```shell
 python app.py
 ```
+
+## Screenshots
+
+### the Main page
+![Image](screenshots/main.png)
+
+
+### the Notes page
+![Image](screenshots/notes.png)
+
+
+### the Create Note page
+![Image](screenshots/create.png)
+
+
+### the View Note page
+![Image](screenshots/view.png)
