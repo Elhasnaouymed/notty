@@ -1,8 +1,40 @@
 {% extends "roots/base.html" %}
 
 
-
 {% block content %}
-    <h1 class="text-primary">Login</h1>
-    <h2>login content</h2>
+    <div class="mx-auto col-6 my-5">
+        <h1 class="text-primary">Login</h1>
+
+        <form action="{{ url_for('auth.login') }}" method="POST">
+            {{ login_form.hidden_tag() }}
+            <div class="my-4">
+                {{ login_form.username.label(class='form-label') }}
+                {{ login_form.username(class='form-control' + (' is-invalid' if login_form.username.errors else '')) }}
+                {% for error in login_form.username.errors %}
+                    <div class="invalid-feedback">
+                        {{ error }}
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="my-4">
+                {{ login_form.password.label(class='form-label') }}
+                {{ login_form.password(class='form-control' + (' is-invalid' if login_form.password.errors else '')) }}
+                {% for error in login_form.password.errors %}
+                    <div class="invalid-feedback">
+                        {{ error }}
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="form-check my-4">
+                {{ login_form.remember(class='form-check-input cursor-pointer') }}
+                {{ login_form.remember.label(class='form-check-label cursor-pointer') }}
+            </div>
+
+            {{ login_form.submit(class='btn btn-primary px-5') }}
+
+        </form>
+    </div>
+
 {% endblock content %}

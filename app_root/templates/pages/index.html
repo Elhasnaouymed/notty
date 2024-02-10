@@ -1,10 +1,11 @@
 {% extends "roots/base.html" %}
 
 
-
 {% block content %}
+
+    {# The header #}
     <div class="px-4 py-5 my-5 text-center">
-        <img class="d-block mx-auto mb-4" src="{{ url_for('static', filename='img/icons/note.png') }}">
+        <img class="d-block mx-auto mb-4" alt="logo" src="{{ url_for('static', filename='img/icons/note.png') }}">
         <h1 class="display-5 fw-bold text-success text-secondary">You Made it !</h1>
         <div class="col-lg-6 mx-auto">
             <p class="lead mb-4">
@@ -17,7 +18,9 @@
             </div>
         </div>
     </div>
+    {# End of header #}
 
+    {# The features section #}
     <div class="container px-4 py-5" id="icon-grid">
         <h2 class="pb-2 border-bottom text-success">Features</h2>
 
@@ -37,7 +40,7 @@
                 </svg>
                 <div>
                     <h3 class="fw-bold mb-0 fs-4 text-secondary">No Spyware</h3>
-                    <p>This website wasn't made by neither Microshaft nor Foogle, or even The Zuck.</p>
+                    <p>This website wasn't made by neither Microshaft nor Google, or even the Zuck.</p>
                 </div>
             </div>
             <div class="col d-flex align-items-start">
@@ -55,7 +58,7 @@
                 </svg>
                 <div>
                     <h3 class="fw-bold mb-0 fs-4 text-secondary">Free of Cost</h3>
-                    <p>This website also wasn't made by IApple (I stands for Idiot).</p>
+                    <p>This website also wasn't made by IApple (I stands for Idiot :).</p>
                 </div>
             </div>
             <div class="col d-flex align-items-start">
@@ -64,7 +67,7 @@
                 </svg>
                 <div>
                     <h3 class="fw-bold mb-0 fs-4 text-secondary">No ads</h3>
-                    <p>The World Wide Web is becoming more shitty by each Ad published on it.</p>
+                    <p>The World Wide Web is becoming more silly by each Ad published on it.</p>
                 </div>
             </div>
             <div class="col d-flex align-items-start">
@@ -91,9 +94,11 @@
                 </svg>
                 <div>
                     <h3 class="fw-bold mb-0 fs-4 text-secondary">Pull-Welcome</h3>
-                    <p>We Welcome Pull requests, just not on ****Hub, it's on CodeBerg.</p>
+                    <p>We Welcome Pull requests, and Issues, and Stars on GitHub why not :).</p>
                 </div>
             </div>
         </div>
     </div>
+    {# End of features section #}
+
 {% endblock content %}

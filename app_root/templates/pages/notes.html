@@ -1,8 +1,63 @@
 {% extends "roots/base.html" %}
 
 
+{% macro note_card(note) %}
+    {# The Note Card, you pass a NoteModel, this macro does the rest to show it on webpage #}
+    <div class="col-sm-12 col-lg-6 col-xl-4">
+        <div id="note-{{ note.token }}" class="card shadow">
+            <h5 class="card-header">
+                {% if note.last_modified %}
+                    {{ note.last_modified.strftime(DTFORMATS.SHORT) }}
+                {% else %}
+                    {{ note.create_date.strftime(DTFORMATS.SHORT) }}
+                {% endif %}
+            </h5>
+            <div class="card-body">
+                <h3 class="card-title">{{ note.title }}</h3>
+                <a href="{{ url_for('views.view_note', token=note.token) }}" class="btn btn-outline-primary px-4 mt-3">View</a>
+            </div>
+        </div>
+    </div>
+{% endmacro %}
+
 
 {% block content %}
-    <h1 class="text-primary">Notes</h1>
-    <h2>notes content</h2>
+    <div class="my-4">
+        <h1 class="text-primary">Your Notes</h1>
+        {% if notes %}  {# when the user has notes, show them #}
+
+            <div class="row g-4 mt-2">
+
+                {# this is the default top left card #}
+                <div class="col-sm-12 col-lg-6 col-xl-4">
+                    <div class="card shadow-sm bg-secondary">
+                        <h5 class="card-header text-white">
+                            <i>oldest note:</i> {{ oldest_note.create_date.strftime(DTFORMATS.SHORT) }}
+                        </h5>
+                        <div class="card-body bg-light">
+                            <h3 class="card-title">Total notes: {{ notes | length }}</h3>
+                            <a href="{{ url_for('views.create_note') }}" class="btn btn-outline-primary px-4 mt-3">Create New</a>
+                        </div>
+                    </div>
+                </div>
+
+
+                {% for note in notes %}
+                    {{ note_card(note) }}
+                {% endfor %}
+            </div>
+
+        {% else %}  {# when the user has no notes, show the following #}
+
+            <div class="col-8 mx-auto my-5 p-4 shadow opacity-75 bg-light rounded-2 border border-1 border-secondary text-center">
+                <div class="lead fw-bold text-secondary p-5">
+                    No Notes was found for this user.
+                </div>
+                <div class="pb-5">
+                    <a href="{{ url_for('views.create_note') }}" class="px-5 btn btn-primary">Create</a>
+                </div>
+            </div>
+
+        {% endif %}
+    </div>
 {% endblock content %}

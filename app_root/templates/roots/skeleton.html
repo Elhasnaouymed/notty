@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Notty</title>
     <link href="{{ url_for('static', filename='css/bootstrap.css') }}" rel="stylesheet">
+    {% block head %}
+        {# don't remove this block, its used on other pages to include external libraries for them to use #}
+    {% endblock head %}
 </head>
 <body>
     {% block body %}

@@ -1,16 +1,24 @@
+{#
+Simple bootstrap navbar with two Menus and a center Username
+#}
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container">
+
+        {# Brand name and logo #}
         <a class="navbar-brand" href="#">
             <img src="{{ url_for('static', filename='img/icons/note.png') }}" alt="Logo" height="24" class="d-inline-block align-text-top">
             Notty
         </a>
 
+        {# Integration for mobile view, I hate mobiles #}
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown"
                 aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
+
+            {# Fixed nav menu at the left #}
             <ul class="navbar-nav">
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('views.home') }}">Home</a>
@@ -22,10 +30,15 @@
                     <a class="nav-link" href="{{ url_for('views.about') }}">About</a>
                 </li>
             </ul>
+
+            {# Centered Username only if the user is logged in #}
+            <span class="mx-auto text-white text-uppercase fw-bold">{{ current_user.username }}</span>
+
+            {# Variant right nav menu for register, login, logout, help #}
             <ul class="navbar-nav ms-auto">
                 {% if current_user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('auth.login') }}">Log Out</a>
+                        <a class="nav-link" href="{{ url_for('auth.logout', token=logout_token()) }}">Log Out</a>
                     </li>
                 {% else %}
                     <li class="nav-item">
@@ -46,7 +59,7 @@
                     </ul>
                 </li>
             </ul>
-        </div>
 
+        </div>
     </div>
 </nav>

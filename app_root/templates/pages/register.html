@@ -7,6 +7,7 @@
         <h1 class="text-primary">Register</h1>
         <form action="{{ url_for('auth.register') }}" method="POST">
             {{ register_form.hidden_tag() }}
+
             <div class="my-4">
                 {{ register_form.username.label(class='form-label') }}
                 {{ register_form.username(class='form-control' + (' is-invalid' if register_form.username.errors else ''), placeholder='Choose a Username') }}
@@ -16,6 +17,7 @@
                     </div>
                 {% endfor %}
             </div>
+
             <div class="my-4">
                 {{ register_form.password.label(class='form-label') }}
                 {{ register_form.password(class='form-control' + (' is-invalid' if register_form.password.errors else ''), placeholder='Choose a Password') }}
@@ -25,9 +27,24 @@
                     </div>
                 {% endfor %}
             </div>
+
+            <div class="my-4">
+                {{ register_form.confirm_password.label(class='form-label') }}
+                {{ register_form.confirm_password(class='form-control' + (' is-invalid' if register_form.confirm_password.errors else ''), placeholder='Re Enter Your chosen password') }}
+                {% for error in register_form.confirm_password.errors %}
+                    <div class="invalid-feedback">
+                        {{ error }}
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="form-check my-4">
+                {{ register_form.agreement(class='form-check-input cursor-pointer') }}
+                {{ register_form.agreement.label(class='form-check-label cursor-pointer') }}
+            </div>
+
             {{ register_form.submit(class='btn btn-primary px-5') }}
 
         </form>
     </div>
-
 {% endblock content %}

@@ -1,0 +1,18 @@
+{% extends "roots/base.html" %}
+
+{% block content %}
+    <div class="my-5">
+
+        <div>
+            <div class="my-0 small">Created at {{ note.create_date.strftime(DTFORMATS.SHORT) }},
+                {{ 'Never modified' if not note.last_modified else 'Last modified ' + note.last_modified.strftime(DTFORMATS.SHORT) }}</div>
+            <h1>{{ note.title }}</h1>
+        </div>
+
+        <hr>
+
+        <div>
+            {{ note.content | safe }}
+        </div>
+    </div>
+{% endblock content %}

@@ -1,6 +1,6 @@
 from typing import Union
 
-from flask import Flask, Blueprint, redirect
+from flask import Flask, Blueprint
 from flask_restx import Api
 
 from ..constants import SCodes
